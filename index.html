@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style/style.css">
     <title>Pong</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
 <body>
     <header>
@@ -12,16 +13,18 @@
         <p>Joue le plus longtemps possible !</p>
     </header>
 
-    <section>
-        <canvas>
-            
+    <section class="game">
+        <canvas id="canva" width="300" height="500">
+
         </canvas>
 
         <button id="btnNewGame">Nouvelle partie</button>
         <p>Score: <span id="labScore">0</span>s</p>
 
-        <button id="btnLeft"><-</button>
-        <button id="btnRight">-></button>
+        <section>
+            <button id="btnLeft"><i class="fa-regular fa-circle-left"></i></button>
+            <button id="btnRight"><i class="fa-regular fa-circle-right"></i></button>
+        </section>
     </section>
 
     <footer>
