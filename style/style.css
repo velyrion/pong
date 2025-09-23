@@ -134,3 +134,8 @@ footer {
     padding: 8px 14px;
   }
 }
+
+#resultat {
+  color: red;
+  font-style: bold;
+}

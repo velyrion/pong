@@ -4,6 +4,7 @@ const btnNewGame = document.getElementById("btnNewGame");
 const labScore = document.getElementById("labScore");
 const btnLeft = document.getElementById("btnLeft"), btnRight = document.getElementById("btnRight");
 const context2D = canva.getContext("2d");
+const resultat = document.getElementById("resultat");
 
 // classes
 class Player {
@@ -30,7 +31,7 @@ class Player {
         }
 
         display() {
-                context2D.fillStyle = "#39b0ecff"
+                context2D.fillStyle = "#d5e4ecff"
                 context2D.fillRect(this.x, this.y, this.width, this.height);
         }
 }
@@ -46,8 +47,13 @@ class Ball {
                 this.y = y;
                 this.radius = radius;
 
-                this.dx = Math.random() > 0.5 ? ((Math.random() * 10) % (Ball.speed)) : -((Math.random() * 10) % (Ball.speed));
-                this.dy = Math.random() > 0.5 ? ((Math.random() * 10) % (Ball.speed)) : -((Math.random() * 10) % (Ball.speed));
+                console.log(Ball.speed);
+
+                this.dx = (Math.random() - 0.5) * 2;                
+                this.dy = (Math.random() - 0.5) * 2;
+                this.dx *= Ball.speed;
+                this.dy *= Ball.speed;
+
         }
 
         move(player) {
@@ -64,19 +70,17 @@ class Ball {
                 if (this.y < 0) {
                         this.y = 0;
                         this.dy *= -1;
+                } else if (this.y-this.radius > canva.height) {
+                        this.isOut = true;
+                        // stop the ball -> loose
                 } else if (this.y >= player.y && this.x >= player.x && this.x <= player.x + player.width) {
                         this.y = player.y-this.dy;
                         this.dy *= -1;
-                } else if (this.y > player.y + 1) {
-                        this.dx = 0;
-                        this.dy = 0;
-                        isOut = true;
-                        // stop the ball -> loose
                 }
         }
 
         display() {
-                context2D.fillStyle = "#39b0ecff"
+                context2D.fillStyle = "#d5e4ecff"
                 context2D.beginPath();
                 context2D.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
                 context2D.fill();
@@ -103,11 +107,16 @@ function updateScore(timeStamp) {
         labScore.textContent = elapse.toFixed(0);
 }
 
-function newGame() {
-        player = new Player(canva.width/2-25, canva.height-12, 50, 10);
+function init() {
+        player = new Player(canva.width/2-38, canva.height-12, 76, 10);
         ball = new Ball(canva.width/2, canva.height/2, 5);
         startTime = null; 
+        resultat.innerHTML = "";
+        displayItems();
+}
 
+function newGame() {
+        init();
         update();
 }
 
@@ -174,7 +183,7 @@ function update(timeStamp) {
         if (player == null || ball == null) return;
 
         if (ball.isOut) {
-
+                resultat.innerHTML = "Vous avez perdu";
         } else {
                 if (moveLeft) player.move(-1);
                 if (moveRight) player.move(1);
@@ -186,3 +195,4 @@ function update(timeStamp) {
         requestAnimationFrame(update);
 }
 
+init();
