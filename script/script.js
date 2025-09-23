@@ -40,7 +40,7 @@ class Ball {
         x; y; radius;
         dx; dy;
         isOut = false;
-        static speed = 6.5;
+        static speed = 5;
 
         constructor(x, y, radius) {
                 this.x = x;
@@ -51,8 +51,9 @@ class Ball {
 
                 this.dx = (Math.random() - 0.5) * 2;                
                 this.dy = (Math.random() - 0.5) * 2;
-                this.dx *= Ball.speed;
-                this.dy *= Ball.speed;
+                let len = Math.sqrt(this.dx*this.dx+this.dy*this.dy);
+                this.dx = this.dx / len * Ball.speed;
+                this.dy = this.dy / len * Ball.speed;
 
         }
 
@@ -75,8 +76,8 @@ class Ball {
                 } else if (this.y-this.radius > canva.height) {
                         this.isOut = true;
                         // stop the ball -> loose
-                } else if (this.y >= player.y && this.x >= player.x && this.x <= player.x + player.width) {
-                        this.y = player.y-this.dy;
+                } else if (this.y > player.y && this.x >= player.x && this.x <= player.x + player.width) {
+                        this.y = player.y-this.radius;
                         this.dy *= -1;
                 }
                 

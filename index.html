@@ -8,12 +8,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
 <body>
-    <header>
-        <h1>Solo Pong</h1>                                  
-        <p>Joue le plus longtemps possible !</p>
-    </header>
-
     <section class="game">
+        <header>
+            <h1>Solo Pong</h1>                                  
+            <p>Joue le plus longtemps possible !</p>
+        </header>
         <canvas id="canva" width="300" height="450">
 
         </canvas>
@@ -21,12 +20,12 @@
         <button id="btnNewGame">Nouvelle partie</button>
         <p>Score: <span id="labScore">0</span>s</p>
 
-        <section id="resultat"></section>
+        <div id="resultat"></div>
 
-        <section>
+        <div>
             <button id="btnLeft"><i class="fa-regular fa-circle-left"></i></button>
             <button id="btnRight"><i class="fa-regular fa-circle-right"></i></button>
-        </section>
+        </div>
     </section>
 
     <footer>
