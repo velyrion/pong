@@ -9,7 +9,7 @@ const resultat = document.getElementById("resultat");
 // classes
 class Player {
         x; y; width; height;
-        static speed = 1.5;
+        static speed = 2.5;
 
         constructor(x, y, width, height) {
                 this.x = x;
@@ -40,7 +40,7 @@ class Ball {
         x; y; radius;
         dx; dy;
         isOut = false;
-        static speed = 2.5;
+        static speed = 6.5;
 
         constructor(x, y, radius) {
                 this.x = x;
@@ -62,9 +62,11 @@ class Ball {
                 if (this.x < 0) {
                         this.x = 0;
                         this.dx *= -1;
+                        this.dx += Math.random() - 0.5;
                 } else if (this.x + this.radius > canva.width) {
                         this.x = canva.width - this.radius;
                         this.dx *= -1;
+                        this.dx += Math.random() - 0.5;
                 }
 
                 if (this.y < 0) {
@@ -77,6 +79,7 @@ class Ball {
                         this.y = player.y-this.dy;
                         this.dy *= -1;
                 }
+                
         }
 
         display() {
@@ -107,17 +110,12 @@ function updateScore(timeStamp) {
         labScore.textContent = elapse.toFixed(0);
 }
 
-function init() {
+function newGame() {
         player = new Player(canva.width/2-38, canva.height-12, 76, 10);
         ball = new Ball(canva.width/2, canva.height/2, 5);
         startTime = null; 
         resultat.innerHTML = "";
         displayItems();
-}
-
-function newGame() {
-        init();
-        update();
 }
 
 // movement
@@ -195,4 +193,5 @@ function update(timeStamp) {
         requestAnimationFrame(update);
 }
 
-init();
+newGame();
+update();
