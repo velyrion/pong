@@ -2,6 +2,7 @@
 const canva = document.getElementById("canva");
 const btnNewGame = document.getElementById("btnNewGame");
 const labScore = document.getElementById("labScore");
+const labBestScore = document.getElementById("labBestScore");
 const btnLeft = document.getElementById("btnLeft"), btnRight = document.getElementById("btnRight");
 const context2D = canva.getContext("2d");
 const resultat = document.getElementById("resultat");
@@ -9,7 +10,7 @@ const resultat = document.getElementById("resultat");
 // classes
 class Player {
         x; y; width; height;
-        static speed = 2.5;
+        static speed = 3.5;
 
         constructor(x, y, width, height) {
                 this.x = x;
@@ -38,23 +39,32 @@ class Player {
 
 class Ball {
         x; y; radius;
-        dx; dy;
+        dx = 0; dy = 0;
+        nbBounces = 0;
         isOut = false;
-        static speed = 5;
+        static defaultSpeed = 3.5;
+        speed = Ball.defaultSpeed;
 
         constructor(x, y, radius) {
                 this.x = x;
                 this.y = y;
                 this.radius = radius;
 
-                console.log(Ball.speed);
+                this.initMovement();
+                this.normalize();
+        }
 
-                this.dx = (Math.random() - 0.5) * 2;                
-                this.dy = (Math.random() - 0.5) * 2;
+        initMovement() {
+                while ((this.dx <= 0.01 && this.dx >= -0.01)  || (this.dy <= 0.01 && this.dy >= -0.01)) {
+                        this.dx = (Math.random() - 0.5) * 2;                
+                        this.dy = (Math.random() - 0.5) * 2;
+                }
+        }
+
+        normalize() {
                 let len = Math.sqrt(this.dx*this.dx+this.dy*this.dy);
-                this.dx = this.dx / len * Ball.speed;
-                this.dy = this.dy / len * Ball.speed;
-
+                this.dx = this.dx / len * this.speed;
+                this.dy = this.dy / len * this.speed;
         }
 
         move(player) {
@@ -64,21 +74,31 @@ class Ball {
                         this.x = 0;
                         this.dx *= -1;
                         this.dx += Math.random() - 0.5;
+                        this.nbBounces++;
                 } else if (this.x + this.radius > canva.width) {
                         this.x = canva.width - this.radius;
                         this.dx *= -1;
                         this.dx += Math.random() - 0.5;
+                        this.nbBounces++;
                 }
 
                 if (this.y < 0) {
                         this.y = 0;
                         this.dy *= -1;
+                        this.nbBounces++;
                 } else if (this.y-this.radius > canva.height) {
                         this.isOut = true;
                         // stop the ball -> loose
                 } else if (this.y > player.y && this.x >= player.x && this.x <= player.x + player.width) {
                         this.y = player.y-this.radius;
                         this.dy *= -1;
+                        this.nbBounces++;
+                }
+
+                if (this.nbBounces != 0 && this.nbBounces%10 == 0 && this.speed < Ball.defaultSpeed*5) {
+                        this.nbBounces = 0;
+                        this.speed += Ball.defaultSpeed/10;
+                        this.normalize();
                 }
                 
         }
@@ -116,6 +136,7 @@ function newGame() {
         ball = new Ball(canva.width/2, canva.height/2, 5);
         startTime = null; 
         resultat.innerHTML = "";
+        labBestScore.innerHTML = localStorage.getItem("bestScore");
         displayItems();
 }
 
@@ -182,6 +203,9 @@ function update(timeStamp) {
         if (player == null || ball == null) return;
 
         if (ball.isOut) {
+                let score = parseInt(labScore.innerHTML);
+                if (parseInt(labBestScore.innerHTML) <= score)
+                        localStorage.setItem("bestScore", score);
                 resultat.innerHTML = "Vous avez perdu";
         } else {
                 if (moveLeft) player.move(-1);

@@ -79,7 +79,7 @@ button:active {
 
 /* Boutons directionnels */
 #btnLeft, #btnRight {
-  font-size: 1.5rem;
+  font-size: 3rem;
   padding: 12px 18px;
   border-radius: 50%;
   display: inline-flex;
@@ -88,10 +88,13 @@ button:active {
 }
 
 /* === SCORE === */
-#labScore {
-  font-weight: bold;
+#labScore, #labBestScore {
   color: #ffd700; /* or */
   font-size: clamp(1rem, 4vw, 1.5rem);
+}
+
+#labBestScore {
+  font-weight: bold;
 }
 
 /* === FOOTER === */
