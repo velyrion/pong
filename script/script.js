@@ -136,7 +136,8 @@ function newGame() {
         ball = new Ball(canva.width/2, canva.height/2, 5);
         startTime = null; 
         resultat.innerHTML = "";
-        labBestScore.innerHTML = localStorage.getItem("bestScore");
+        let bestScore = localStorage.getItem("bestScore");
+        labBestScore.innerHTML = bestScore == null ? "0" : bestScore;
         displayItems();
 }
 
@@ -200,11 +201,10 @@ btnNewGame.addEventListener('click', () => newGame());
 
 
 function update(timeStamp) {
-        if (player == null || ball == null) return;
-
         if (ball.isOut) {
                 let score = parseInt(labScore.innerHTML);
-                if (parseInt(labBestScore.innerHTML) <= score)
+                let bestScore = localStorage.getItem("bestScore");
+                if (bestScore == null || bestScore <= score)
                         localStorage.setItem("bestScore", score);
                 resultat.innerHTML = "Vous avez perdu";
         } else {
